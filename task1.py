@@ -7,19 +7,18 @@ def main(filename):
     cipher = AES.new(key, AES.MODE_ECB)
     cipher_text = b''
     with open(filename, 'rb') as file:
+        header = file.read(54)
         while True:
             data = file.read(128)
             if not data:
                 break
             print(len(data))
             padded_data = add_padding(data)
-            print(len(padded_data))
-            print(padded_data)
-            ascii_text = data.decode('ascii')
-            print(ascii_text)
-            cipher_text += cipher.encrypt(padded_data)
-    print(cipher_text)
 
+            cipher_text += cipher.encrypt(data)
+    with open(filename[:-4] + "_encrypted" + filename[-4:], 'wb') as file_writer:
+        file_writer.write(header)
+        file_writer.write(cipher_text)
 
 def add_padding(data):
     missing_len = 128 - len(data)
@@ -28,4 +27,4 @@ def add_padding(data):
 
 
 if __name__ == "__main__":
-    main("text.txt")
+    main("mustang.bmp")
