@@ -7,17 +7,18 @@ def main(filename):
     cipher = AES.new(key, AES.MODE_ECB)
     cipher_text = b''
     with open(filename, 'rb') as file:
-        while True:
+        header = file.read(54)
+        cond = True
+        while cond:
             data = file.read(128)
             if not data:
                 break
-            print(len(data))
-            ascii_text = data.decode('ascii')
-            print(ascii_text)
             cipher_text += cipher.encrypt(data)
-    print(cipher_text)
-
+            cond = False
+    with open(filename[:-4] + "_encrypted" + filename[-4:], 'wb') as file_writer:
+        file_writer.write(header)
+        file_writer.write(cipher_text)
 
 
 if __name__ == "__main__":
-    main("text.txt")
+    main("mustang.bmp")
