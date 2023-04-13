@@ -8,13 +8,11 @@ def main(filename):
     cipher_text = b''
     with open(filename, 'rb') as file:
         header = file.read(54)
-        cond = True
-        while cond:
+        while True:
             data = file.read(128)
             if not data:
                 break
             cipher_text += cipher.encrypt(data)
-            cond = False
     with open(filename[:-4] + "_encrypted" + filename[-4:], 'wb') as file_writer:
         file_writer.write(header)
         file_writer.write(cipher_text)
