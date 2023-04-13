@@ -12,11 +12,19 @@ def main(filename):
             if not data:
                 break
             print(len(data))
+            padded_data = add_padding(data)
+            print(len(padded_data))
+            print(padded_data)
             ascii_text = data.decode('ascii')
             print(ascii_text)
-            cipher_text += cipher.encrypt(data)
+            cipher_text += cipher.encrypt(padded_data)
     print(cipher_text)
 
+
+def add_padding(data):
+    missing_len = 128 - len(data)
+    data = data + bytes(missing_len * chr(missing_len), 'utf-8')
+    return data
 
 
 if __name__ == "__main__":
