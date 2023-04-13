@@ -12,13 +12,13 @@ def main(filename):
             data = file.read(128)
             if not data:
                 break
-            print(len(data))
             padded_data = add_padding(data)
 
-            cipher_text += cipher.encrypt(data)
+            cipher_text += cipher.encrypt(padded_data)
     with open(filename[:-4] + "_encrypted" + filename[-4:], 'wb') as file_writer:
         file_writer.write(header)
         file_writer.write(cipher_text)
+
 
 def add_padding(data):
     missing_len = 128 - len(data)
