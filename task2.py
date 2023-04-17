@@ -40,6 +40,9 @@ def verify(key, iv, ciphertext):
     plaintext = decrypt_cipher.decrypt(ciphertext)
     return b';admin=true' in plaintext
 
+def cringe():
+    pass
+
 
 if __name__ == "__main__":
     main()
