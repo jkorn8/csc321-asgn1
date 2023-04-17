@@ -3,8 +3,6 @@ from Crypto.Random import get_random_bytes
 
 
 def ecb(filename, cipher):
-    key = get_random_bytes(16)
-    cipher = AES.new(key, AES.MODE_ECB)
     cipher_text = b''
     with open(filename, 'rb') as file:
         header = file.read(54)
