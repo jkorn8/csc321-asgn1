@@ -7,14 +7,15 @@ def main():
     key = get_random_bytes(16)
     cipher = AES.new(key, AES.MODE_ECB)
     iv = get_random_bytes(16)
-    ciphertext = submit(cipher, iv)
-    verify(key, iv, ciphertext)
+    user_plaintext = "hello:admin<true"
+    ciphertext = submit(user_plaintext, cipher, iv)
+    verify(key, iv, attack(ciphertext))
 
 
-def submit(cipher, iv):
-    userdata = input("Enter data: ")
-    formatted_userdata = userdata.replace(";", "%3B").replace("=", "%3D")
-    submit_string = bytes("userid=456;userdata=" + formatted_userdata + ";session-id=31337", 'utf-8')
+def submit(plaintext, cipher, iv):
+    formatted_plaintext = plaintext.replace(";", "%3B").replace("=", "%3D")
+    submit_string = bytes("userid=456;userdata=" + formatted_plaintext + ";session-id=31337", 'utf-8')
+    print(submit_string)
     cipher_text = b''
     chain_iv = bytearray(iv)
 
@@ -42,7 +43,15 @@ def remove_padding(padded_string):
 def verify(key, iv, ciphertext):
     decrypt_cipher = AES.new(key, mode=AES.MODE_CBC, iv=iv)
     plaintext = decrypt_cipher.decrypt(ciphertext)
+    print(plaintext)
     return b';admin=true' in plaintext
+
+
+def attack(ciphertext):
+    ba_ciphertext = bytearray(ciphertext)
+    ba_ciphertext[20] += 1
+    ba_ciphertext[25] += 2
+    return bytes(ba_ciphertext)
 
 
 if __name__ == "__main__":
