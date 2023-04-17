@@ -34,6 +34,10 @@ def submit(cipher, iv):
     return cipher_text
 
 
+def stupid_github():
+    pass
+
+
 def verify(cipher, iv, ciphertext):
     return False
 
