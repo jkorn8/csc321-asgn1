@@ -9,6 +9,7 @@ def main():
     iv = get_random_bytes(128)
     ciphertext = submit(cipher, iv)
     print(ciphertext)
+    verify(key, iv, ciphertext)
 
 
 def submit(cipher, iv):
@@ -32,7 +33,7 @@ def submit(cipher, iv):
     return cipher_text
 
 
-def verify(key, iv):
+def verify(cipher, iv, ciphertext):
     return False
 
 
