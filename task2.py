@@ -20,7 +20,7 @@ def submit(key, iv):
 
     i = 0
     while i < len(submitstring):
-        j = min(i+128, len(submitstring))
+        j = min(i + 128, len(submitstring))
         data = submitstring[i: j]
         padded_data = add_padding(data)
         result = bytearray()
@@ -29,6 +29,10 @@ def submit(key, iv):
         chain_iv = result
         cipher_text += cipher.encrypt(result)
         return cipher_text
+
+
+def verify(key, iv):
+    return False
 
 
 if __name__ == "__main__":
