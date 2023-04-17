@@ -42,7 +42,7 @@ def remove_padding(padded_string):
 
 def verify(key, iv, ciphertext):
     decrypt_cipher = AES.new(key, mode=AES.MODE_CBC, iv=iv)
-    plaintext = decrypt_cipher.decrypt(ciphertext)
+    plaintext = remove_padding(decrypt_cipher.decrypt(ciphertext))
     print(plaintext)
     return b';admin=true' in plaintext
 
