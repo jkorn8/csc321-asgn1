@@ -24,8 +24,8 @@ def submit(cipher, iv):
         data = submit_string[i: min(i+128, len(submit_string))]
         padded_data = add_padding(data)
         result = bytearray()
-        for i in range(len(padded_data)):
-            result.append(padded_data[i] ^ chain_iv[i])
+        for j in range(len(padded_data)):
+            result.append(padded_data[j] ^ chain_iv[j])
         chain_iv = result
         cipher_text += cipher.encrypt(result)
         i += 128
