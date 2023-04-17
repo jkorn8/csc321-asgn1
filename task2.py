@@ -2,14 +2,12 @@ from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 from task1 import add_padding
 
-import binascii
 
 def main():
     key = get_random_bytes(16)
     cipher = AES.new(key, AES.MODE_ECB)
     iv = get_random_bytes(16)
     ciphertext = submit(cipher, iv)
-    print(binascii.hexlify(ciphertext).decode('utf-8'))
     verify(key, iv, ciphertext)
 
 
@@ -17,7 +15,6 @@ def submit(cipher, iv):
     userdata = input("Enter data: ")
     formatted_userdata = userdata.replace(";", "%3B").replace("=", "%3D")
     submit_string = bytes("userid=456;userdata=" + formatted_userdata + ";session-id=31337", 'utf-8')
-    print(binascii.hexlify(submit_string).decode('utf-8'))
     cipher_text = b''
     chain_iv = bytearray(iv)
 
@@ -34,8 +31,12 @@ def submit(cipher, iv):
     return cipher_text
 
 
-def remove_padding():
-    pass
+def remove_padding(padded_string):
+    last_bit = padded_string[-1]
+    referenced_bit = padded_string[-last_bit] if last_bit < len(padded_string) else None
+    if last_bit == referenced_bit:
+        return padded_string[:-last_bit]
+    return padded_string
 
 
 def verify(key, iv, ciphertext):
