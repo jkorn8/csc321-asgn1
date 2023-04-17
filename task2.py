@@ -9,7 +9,7 @@ def main():
     iv = get_random_bytes(16)
     user_plaintext = "hello:admin<true"
     ciphertext = submit(user_plaintext, cipher, iv)
-    verify(key, iv, attack(ciphertext))
+    print(verify(key, iv, attack(ciphertext)))
 
 
 def submit(plaintext, cipher, iv):
@@ -49,8 +49,8 @@ def verify(key, iv, ciphertext):
 
 def attack(ciphertext):
     ba_ciphertext = bytearray(ciphertext)
-    ba_ciphertext[20] += 1
-    ba_ciphertext[25] += 2
+    ba_ciphertext[9] = ba_ciphertext[9] ^ ord(":") ^ ord(";")
+    ba_ciphertext[15] = ba_ciphertext[15] ^ ord("<") ^ ord("=")
     return bytes(ba_ciphertext)
 
 
