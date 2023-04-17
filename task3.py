@@ -5,7 +5,7 @@ from Crypto.Random import get_random_bytes
 
 
 def main():
-    # NEVER MIND I WASTED A BUNCH OF TIME, USE OPENSSL
+    # NEVER MIND I WASTED A BUNCH OF TIME, USE OPENSSL IN TERMINAL
     aes_start = time()
     aes("hello world")
     aes_end = time()
