@@ -7,7 +7,7 @@ def ecb(filename, cipher):
     with open(filename, 'rb') as file:
         header = file.read(54)
         while True:
-            data = file.read(128)
+            data = file.read(16)
             if not data:
                 break
             padded_data = add_padding(data)
@@ -23,14 +23,14 @@ def cbc(filename, cipher, iv):
     with open(filename, 'rb') as file:
         header = file.read(54)
         while True:
-            data = file.read(128)
+            data = file.read(16)
             padded_data = bytearray(add_padding(data))
             if not data:
                 break
             result = bytearray()
             for i in range(len(padded_data)):
                 result.append(padded_data[i] ^ chain_iv[i])
-            chain_iv = result
+            chain_iv = cipher.encrypt(result)
             cipher_text += cipher.encrypt(result)
     with open(filename[:-4] + "_encrypted_cbc" + filename[-4:], 'wb') as file_writer:
         file_writer.write(header)
@@ -38,7 +38,7 @@ def cbc(filename, cipher, iv):
 
 
 def add_padding(data):
-    missing_len = 128 - len(data)
+    missing_len = 16 - len(data)
     data = data + bytes(missing_len * chr(missing_len), 'utf-8')
     return data
 
@@ -46,6 +46,6 @@ def add_padding(data):
 if __name__ == "__main__":
     key = get_random_bytes(16)
     my_cipher = AES.new(key, AES.MODE_ECB)
-    my_iv = get_random_bytes(128)
+    my_iv = get_random_bytes(16)
     ecb("mustang.bmp", my_cipher)
     cbc("mustang.bmp", my_cipher, my_iv)
