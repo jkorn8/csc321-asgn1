@@ -10,6 +10,7 @@ def main():
     iv = get_random_bytes(16)
     ciphertext = submit(cipher, iv)
     print(binascii.hexlify(ciphertext).decode('utf-8'))
+    verify(key, iv, ciphertext)
 
 
 def submit(cipher, iv):
@@ -31,6 +32,10 @@ def submit(cipher, iv):
         cipher_text += cipher.encrypt(result)
         i += 16
     return cipher_text
+
+
+def verify(cipher, iv, ciphertext):
+    return False
 
 
 if __name__ == "__main__":
