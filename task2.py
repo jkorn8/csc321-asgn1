@@ -4,14 +4,13 @@ from task1 import add_padding
 
 import binascii
 
-
 def main():
     key = get_random_bytes(16)
     cipher = AES.new(key, AES.MODE_ECB)
     iv = get_random_bytes(16)
     ciphertext = submit(cipher, iv)
     print(binascii.hexlify(ciphertext).decode('utf-8'))
-    res = verify(key, iv, ciphertext)
+    verify(key, iv, ciphertext)
 
 
 def submit(cipher, iv):
@@ -24,7 +23,7 @@ def submit(cipher, iv):
 
     i = 0
     while i < len(submit_string):
-        data = submit_string[i: min(i + 16, len(submit_string))]
+        data = submit_string[i: min(i+16, len(submit_string))]
         padded_data = bytearray(add_padding(data))
         result = bytearray()
         for j in range(len(padded_data)):
@@ -35,13 +34,14 @@ def submit(cipher, iv):
     return cipher_text
 
 
+def remove_padding():
+    pass
+
+
 def verify(key, iv, ciphertext):
     decrypt_cipher = AES.new(key, mode=AES.MODE_CBC, iv=iv)
     plaintext = decrypt_cipher.decrypt(ciphertext)
     return b';admin=true' in plaintext
-
-def cringe():
-    pass
 
 
 if __name__ == "__main__":
