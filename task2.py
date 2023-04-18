@@ -18,6 +18,7 @@ def main():
 def submit(plaintext, cipher, iv):
     formatted_plaintext = plaintext.replace(";", "%3B").replace("=", "%3D")
     submit_string = bytes("userid=456;userdata=" + formatted_plaintext + ";session-id=31337", 'utf-8')
+    print(f'Input string: {submit_string}')
     cipher_text = b''
     chain_iv = bytearray(iv)
 
@@ -45,6 +46,7 @@ def remove_padding(padded_string):
 def verify(key, iv, ciphertext):
     decrypt_cipher = AES.new(key, mode=AES.MODE_CBC, iv=iv)
     plaintext = remove_padding(decrypt_cipher.decrypt(ciphertext))
+    print(f'Attacked string: {plaintext}')
     return b';admin=true' in plaintext
 
 
